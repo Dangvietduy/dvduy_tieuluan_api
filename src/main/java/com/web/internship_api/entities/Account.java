@@ -25,7 +25,7 @@ public class Account implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to AccountsRole
-	@OneToMany(mappedBy="account")
+	@OneToMany(mappedBy="account", fetch = FetchType.EAGER)
 	private List<AccountsRole> accountsRoles;
 
 	//bi-directional many-to-one association to Student
