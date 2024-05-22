@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,14 +24,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.web.internship_api.entities.Account;
 import com.web.internship_api.entities.AttendanceCheck;
+import com.web.internship_api.entities.Company;
 import com.web.internship_api.entities.Internship;
 import com.web.internship_api.entities.InternshipsStudent;
+import com.web.internship_api.entities.Major;
 import com.web.internship_api.entities.Report;
 import com.web.internship_api.entities.Student;
 import com.web.internship_api.entities.Teacher;
+import com.web.internship_api.models.CompanyModel;
 import com.web.internship_api.models.InternShipModel;
+import com.web.internship_api.models.InternshipStudentModel;
+import com.web.internship_api.models.MajorModel;
 import com.web.internship_api.models.ResponseAttendance;
 import com.web.internship_api.models.ResponseInternship;
+import com.web.internship_api.models.ResponseInternshipStudent;
 import com.web.internship_api.models.ResponseListStudent;
 import com.web.internship_api.models.ResponseObject;
 import com.web.internship_api.models.ResponseStatistical;
@@ -44,9 +51,11 @@ import com.web.internship_api.models.TeacherModel;
 import com.web.internship_api.models.UltilSetModel;
 import com.web.internship_api.services.AccountService;
 import com.web.internship_api.services.AttendanceCheckService;
+import com.web.internship_api.services.CompanyService;
 import com.web.internship_api.services.EmailService;
 import com.web.internship_api.services.InternshipService;
 import com.web.internship_api.services.InternshipStudentService;
+import com.web.internship_api.services.MajorService;
 import com.web.internship_api.services.StudentService;
 import com.web.internship_api.services.TeacherService;
 import com.web.internship_api.services.impl.UserDetailServiceImpl;
@@ -61,6 +70,12 @@ public class ManagerControler {
 	StudentService studentService;
 	@Autowired
 	TeacherService teacherService;
+	@Autowired
+	@Lazy
+	private CompanyService companyService;
+	@Autowired
+	@Lazy
+	private MajorService majorService;
 	@Autowired
 	UserDetailServiceImpl userDetailServiceimpl;
 	@Autowired
@@ -300,4 +315,113 @@ public class ManagerControler {
         }
         return sb.toString();
 	}
+	
+	
+	// manage company or (companies) :)) 
+	
+	@PostMapping("/company")
+	public ResponseEntity<ResponseObject> createCompany(@RequestBody CompanyModel model){
+		Company company = companyService.createCompany(model);
+		if(company!= null)
+			return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Create Successfull", company));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(400, "Create Faile", ""));
+	}
+	
+	@GetMapping("/listcompany")
+	public ResponseEntity<ResponseObject> listCompany(){
+		List<Company> company = companyService.findAll();
+		return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Get list company successfull", company));
+	}
+	
+	@PostMapping("/company/search")
+	public ResponseEntity<ResponseObject> searchCompany(@RequestBody CompanyModel model){
+		List<Company> companys = companyService.searchCompany(model);
+		List<CompanyModel> res = companys.stream().map(company -> {
+			return UltilSetModel.setCompanyModel(company);
+		}).collect(Collectors.toList());
+		return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Search company successfull", res));
+	}
+	
+	@GetMapping("/company/{id}")
+	public ResponseEntity<ResponseObject> getInforCompanyById(@PathVariable int id){
+		Optional<Company> companyOptional = companyService.findByCompanyId(id);
+		if(companyOptional.isPresent()) {
+			CompanyModel company = UltilSetModel.setCompanyModel(companyOptional.get());
+			return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Get teacher successfull", company));
+		}
+		return  ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ResponseObject(404, "Not found company",""));
+	}
+	
+	@PutMapping("/company/update/{id}")
+	public ResponseEntity<ResponseObject> updateCompany(@RequestBody CompanyModel model,@PathVariable int id){
+		model.setId(id);
+		Company company = companyService.updateCompany(model);
+		if(company!= null)
+			return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Update Successfull", company));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseObject(404, "Not found company", ""));
+	}
+	
+	@DeleteMapping("/company/{id}")
+	public ResponseEntity<ResponseObject> deteledCompany(@PathVariable int id){
+		Company company = companyService.deleteCompany(id);
+		if(company != null)
+			return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Delete Completed", company));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ResponseObject(404, "Not found company",""));
+	}
+	
+	// manage major
+	
+	@PostMapping("/major")
+	public ResponseEntity<ResponseObject> createMajor(@RequestBody MajorModel model){
+		Major major = majorService.createMajor(model);
+		if(major!= null)
+			return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Create Successfull", major));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(400, "Create Faile", ""));
+	}
+
+	@GetMapping("/listmajor")
+	public ResponseEntity<ResponseObject> listMajor(){
+		List<Major> major = majorService.findAll();
+		return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Get list major successfull", major));
+	}
+	
+	@PostMapping("/major/search")
+	public ResponseEntity<ResponseObject> searchMajor(@RequestBody MajorModel model){
+		List<Major> majors = majorService.searchMajor(model);
+		List<MajorModel> res = majors.stream().map(major -> {
+			return UltilSetModel.setMajorModel(major);
+		}).collect(Collectors.toList());
+		return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Search major successfull", res));
+	}
+	
+	@GetMapping("/major/{id}")
+	public ResponseEntity<ResponseObject> getInforMajorById(@PathVariable int id){
+		Optional<Major> majorOptional = majorService.findById(id);
+		if(majorOptional.isPresent()) {
+			MajorModel major = UltilSetModel.setMajorModel(majorOptional.get());
+			return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Get major successfull", major));
+		}
+		return  ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ResponseObject(404, "Not found major",""));
+	}
+	
+	@PutMapping("/major/update/{id}")
+	public ResponseEntity<ResponseObject> updateMajor(@RequestBody MajorModel model,@PathVariable int id){
+		model.setId(id);
+		Major major = majorService.updateMajor(model);
+		if(major!= null)
+			return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Update Successfull", major));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseObject(404, "Not found major", ""));
+	}
+	
+	@DeleteMapping("/major/{id}")
+	public ResponseEntity<ResponseObject> deteledMajor(@PathVariable int id){
+		Major major = majorService.deleteMajor(id);
+		if(major != null)
+			return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Delete Completed", major));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ResponseObject(404, "Not found major",""));
+	}
+	
+	// manage class (clazzs)
+	
+	
 }

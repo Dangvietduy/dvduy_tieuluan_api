@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.web.internship_api.entities.AttendanceCheck;
+import com.web.internship_api.entities.Company;
 import com.web.internship_api.entities.Internship;
 import com.web.internship_api.entities.InternshipsStudent;
+import com.web.internship_api.entities.Major;
 import com.web.internship_api.entities.Report;
 import com.web.internship_api.entities.Student;
 import com.web.internship_api.entities.Teacher;
@@ -70,6 +72,24 @@ public class UltilSetModel {
 		return model;
 	}
 	
+	public static CompanyModel setCompanyModel(Company company) {
+		CompanyModel model = new CompanyModel();
+		model.setId(company.getId());
+		model.setEmail(company.getEmail());
+		model.setName(company.getName());
+		model.setPhone(company.getPhone());
+		model.setAddress(company.getAddress());
+		model.setIndustry(company.getIndustry());
+		return model;
+	}
+	
+	public static MajorModel setMajorModel(Major major) {
+		MajorModel model = new MajorModel();
+		model.setId(major.getId());
+		model.setName(major.getName());
+		return model;
+	}
+	
 	public static Teacher setTeacher(TeacherModel model) {
 		Teacher teacher = new Teacher();
 		teacher.setName(model.getFullName());
@@ -84,6 +104,7 @@ public class UltilSetModel {
 		teacher.setAvatar(model.getAvatar());
 		return teacher;
 	}
+	
 	
 	public static Student setStudent (StudentModel model) {
 		Student student = new Student();
