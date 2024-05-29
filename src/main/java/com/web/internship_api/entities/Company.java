@@ -2,6 +2,9 @@ package com.web.internship_api.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -30,6 +33,7 @@ public class Company implements Serializable {
 
 	//bi-directional many-to-one association to Internship
 	@OneToMany(mappedBy="company")
+	@JsonIgnore
 	private List<Internship> internships;
 
 	public Company() {

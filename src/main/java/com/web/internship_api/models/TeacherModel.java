@@ -24,7 +24,7 @@ public class TeacherModel {
 	private int salary;
 	
 	private String avatar;
-	
+
 	public TeacherModel() {
 		super();
 		// TODO Auto-generated constructor stub

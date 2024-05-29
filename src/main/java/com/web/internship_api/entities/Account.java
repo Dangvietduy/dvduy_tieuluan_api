@@ -2,6 +2,9 @@ package com.web.internship_api.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -25,15 +28,19 @@ public class Account implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to AccountsRole
+	
 	@OneToMany(mappedBy="account", fetch = FetchType.EAGER)
+	@JsonIgnore
 	private List<AccountsRole> accountsRoles;
 
 	//bi-directional many-to-one association to Student
 	@OneToMany(mappedBy="account")
+	@JsonIgnore
 	private List<Student> students;
 
 	//bi-directional many-to-one association to Teacher
 	@OneToMany(mappedBy="account")
+	@JsonIgnore
 	private List<Teacher> teachers;
 
 	public Account() {

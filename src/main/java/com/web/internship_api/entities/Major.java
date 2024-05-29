@@ -2,6 +2,9 @@ package com.web.internship_api.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -22,6 +25,7 @@ public class Major implements Serializable {
 
 	//bi-directional many-to-one association to Class
 	@OneToMany(mappedBy="major")
+	@JsonIgnore
 	private List<Class> clazzs;
 
 	public Major() {

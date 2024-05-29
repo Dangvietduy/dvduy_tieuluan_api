@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.web.internship_api.entities.Account;
 import com.web.internship_api.entities.AttendanceCheck;
+import com.web.internship_api.entities.Class;
 import com.web.internship_api.entities.Company;
 import com.web.internship_api.entities.Internship;
 import com.web.internship_api.entities.InternshipsStudent;
@@ -33,11 +33,9 @@ import com.web.internship_api.entities.Student;
 import com.web.internship_api.entities.Teacher;
 import com.web.internship_api.models.CompanyModel;
 import com.web.internship_api.models.InternShipModel;
-import com.web.internship_api.models.InternshipStudentModel;
 import com.web.internship_api.models.MajorModel;
 import com.web.internship_api.models.ResponseAttendance;
 import com.web.internship_api.models.ResponseInternship;
-import com.web.internship_api.models.ResponseInternshipStudent;
 import com.web.internship_api.models.ResponseListStudent;
 import com.web.internship_api.models.ResponseObject;
 import com.web.internship_api.models.ResponseStatistical;
@@ -51,6 +49,7 @@ import com.web.internship_api.models.TeacherModel;
 import com.web.internship_api.models.UltilSetModel;
 import com.web.internship_api.services.AccountService;
 import com.web.internship_api.services.AttendanceCheckService;
+import com.web.internship_api.services.ClassService;
 import com.web.internship_api.services.CompanyService;
 import com.web.internship_api.services.EmailService;
 import com.web.internship_api.services.InternshipService;
@@ -71,10 +70,10 @@ public class ManagerControler {
 	@Autowired
 	TeacherService teacherService;
 	@Autowired
-	@Lazy
 	private CompanyService companyService;
 	@Autowired
-	@Lazy
+	private ClassService classService;
+	@Autowired
 	private MajorService majorService;
 	@Autowired
 	UserDetailServiceImpl userDetailServiceimpl;
@@ -421,7 +420,10 @@ public class ManagerControler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ResponseObject(404, "Not found major",""));
 	}
 	
-	// manage class (clazzs)
-	
+	@GetMapping("/listClasses")
+	public ResponseEntity<ResponseObject> listClass(){
+		List<Class> classes = classService.findAll();
+		return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Get list class successfull", classes));
+	}
 	
 }

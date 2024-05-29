@@ -28,7 +28,7 @@ public class UltilSetModel {
 		resStudent.setAddress(student.getAddress());
 		resStudent.setDepartment(student.getDepartment());
 		resStudent.setYear_study(student.getYearStudy());
-//		resStudent.setClassName(student.getClass_());
+		resStudent.setClasses(student.getClazz());
 		if(student.getReports().size() > 0 ) {
 			resStudent.setIdReport(student.getReports().get(0).getId());
 		}

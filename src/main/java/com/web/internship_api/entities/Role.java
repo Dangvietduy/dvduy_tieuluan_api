@@ -2,6 +2,9 @@ package com.web.internship_api.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -23,6 +26,7 @@ public class Role implements Serializable {
 
 	//bi-directional many-to-one association to AccountsRole
 	@OneToMany(mappedBy="role")
+	@JsonIgnore
 	private List<AccountsRole> accountsRoles;
 
 	public Role() {
