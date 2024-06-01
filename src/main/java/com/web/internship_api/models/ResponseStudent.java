@@ -24,7 +24,9 @@ public class ResponseStudent {
 	
 	private String year_study;
 	
-	private Class classes;
+	private int idClass;
+	
+	private String nameClass;
 	
 	private int idReport;
 	
@@ -36,7 +38,7 @@ public class ResponseStudent {
 	}
 
 	public ResponseStudent(int id, String email, String fullname, String sex, Date dob, String phone, String avatar,
-			String address, String department, String year_study, Class classes, int idReport,
+			String address, String department, String year_study, int idClass, String nameClass, int idReport,
 			int idIntershipStudent) {
 		super();
 		this.id = id;
@@ -49,7 +51,8 @@ public class ResponseStudent {
 		this.address = address;
 		this.department = department;
 		this.year_study = year_study;
-		this.classes = classes;
+		this.idClass = idClass;
+		this.nameClass = nameClass;
 		this.idReport = idReport;
 		this.idIntershipStudent = idIntershipStudent;
 	}
@@ -134,12 +137,20 @@ public class ResponseStudent {
 		this.year_study = year_study;
 	}
 
-	public Class getClasses() {
-		return classes;
+	public int getClasses() {
+		return idClass;
 	}
 
-	public void setClasses(Class classes) {
-		this.classes = classes;
+	public void setClasses(int idClass) {
+		this.idClass = idClass;
+	}
+	
+	public String getNameClass() {
+		return nameClass;
+	}
+
+	public void setNameClass(String nameClass) {
+		this.nameClass = nameClass;
 	}
 
 	public int getIdReport() {
@@ -157,6 +168,5 @@ public class ResponseStudent {
 	public void setIdIntershipStudent(int idIntershipStudent) {
 		this.idIntershipStudent = idIntershipStudent;
 	}
-	
 	
 }

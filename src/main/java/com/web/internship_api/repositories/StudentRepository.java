@@ -82,5 +82,7 @@ public interface StudentRepository extends JpaRepository<Student, Integer>{
             @Param("sex") String sex,
             @Param("nameTeacher") String nameTeacher,
             @Param("nameInternship") String nameInternship);
+	
+
 
 }
