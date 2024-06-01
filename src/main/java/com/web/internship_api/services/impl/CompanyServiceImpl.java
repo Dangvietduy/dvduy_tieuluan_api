@@ -18,7 +18,6 @@ public class CompanyServiceImpl implements CompanyService{
 	@Autowired
 	CompanyRepositories companyRepositories;
 
-
 	@Override
 	public Optional<Company> findByCompanyId(int companyId) {
 		// TODO Auto-generated method stub

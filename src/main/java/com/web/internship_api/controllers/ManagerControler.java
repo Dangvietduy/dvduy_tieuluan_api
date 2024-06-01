@@ -31,6 +31,7 @@ import com.web.internship_api.entities.Major;
 import com.web.internship_api.entities.Report;
 import com.web.internship_api.entities.Student;
 import com.web.internship_api.entities.Teacher;
+import com.web.internship_api.models.ClassModel;
 import com.web.internship_api.models.CompanyModel;
 import com.web.internship_api.models.InternShipModel;
 import com.web.internship_api.models.MajorModel;
@@ -70,11 +71,11 @@ public class ManagerControler {
 	@Autowired
 	TeacherService teacherService;
 	@Autowired
-	private CompanyService companyService;
+	CompanyService companyService;
 	@Autowired
-	private ClassService classService;
+	ClassService classService;
 	@Autowired
-	private MajorService majorService;
+	MajorService majorService;
 	@Autowired
 	UserDetailServiceImpl userDetailServiceimpl;
 	@Autowired
@@ -317,7 +318,6 @@ public class ManagerControler {
 	
 	
 	// manage company or (companies) :)) 
-	
 	@PostMapping("/company")
 	public ResponseEntity<ResponseObject> createCompany(@RequestBody CompanyModel model){
 		Company company = companyService.createCompany(model);
@@ -369,7 +369,6 @@ public class ManagerControler {
 	}
 	
 	// manage major
-	
 	@PostMapping("/major")
 	public ResponseEntity<ResponseObject> createMajor(@RequestBody MajorModel model){
 		Major major = majorService.createMajor(model);
@@ -420,10 +419,56 @@ public class ManagerControler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ResponseObject(404, "Not found major",""));
 	}
 	
+	// class major
+	@PostMapping("/classes")
+	public ResponseEntity<ResponseObject> createClass(@RequestBody ClassModel model) {
+		Class classes = classService.createClass(model);
+		if (classes != null)
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(200, "Create Successfull", classes));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(400, "Create Faile", ""));
+	}
+	
 	@GetMapping("/listClasses")
 	public ResponseEntity<ResponseObject> listClass(){
 		List<Class> classes = classService.findAll();
 		return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Get list class successfull", classes));
 	}
+	@PostMapping("/classes/search")
+	public ResponseEntity<ResponseObject> searchClass(@RequestBody ClassModel model){
+		List<Class> classes = classService.searchClass(model);
+		List<ClassModel> res = classes.stream().map(classz -> {
+			return UltilSetModel.setClassModel(classz);
+		}).collect(Collectors.toList());
+		return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Search classes successfull", res));
+	}
 	
+	@GetMapping("/classes/{id}")
+	public ResponseEntity<ResponseObject> getInforClassById(@PathVariable int id){
+		Optional<Class> classOptional = classService.findByClassId(id);
+		if(classOptional.isPresent()) {
+			ClassModel classes = UltilSetModel.setClassModel(classOptional.get());
+			return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Get classes successfull", classes));
+		}
+		return  ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ResponseObject(404, "Not found classes",""));
+	}
+	
+	@PutMapping("/classes/update/{id}")
+	public ResponseEntity<ResponseObject> updateClass(@RequestBody ClassModel model,@PathVariable int id){
+		model.setId(id);
+		Class classes = classService.updateClass(model);
+		if(classes!= null)
+			return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Update Successfull", classes));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseObject(404, "Not found classes", ""));
+	}
+	
+	@DeleteMapping("/classes/{id}")
+	public ResponseEntity<ResponseObject> deteledClass(@PathVariable int id){
+		Class classes = classService.deleteClass(id);
+		if(classes != null)
+			return ResponseEntity.status(HttpStatus.OK).body( new ResponseObject(200, "Delete Completed", classes));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ResponseObject(404, "Not found major",""));
+	}
+	
+	
+
 }

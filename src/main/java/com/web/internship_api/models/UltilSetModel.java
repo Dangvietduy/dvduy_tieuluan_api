@@ -10,6 +10,7 @@ import com.web.internship_api.entities.Company;
 import com.web.internship_api.entities.Internship;
 import com.web.internship_api.entities.InternshipsStudent;
 import com.web.internship_api.entities.Major;
+import com.web.internship_api.entities.Class;
 import com.web.internship_api.entities.Report;
 import com.web.internship_api.entities.Student;
 import com.web.internship_api.entities.Teacher;
@@ -80,6 +81,16 @@ public class UltilSetModel {
 		model.setPhone(company.getPhone());
 		model.setAddress(company.getAddress());
 		model.setIndustry(company.getIndustry());
+		return model;
+	}
+	
+	public static ClassModel setClassModel(Class classes) {
+		ClassModel model = new ClassModel();
+		model.setId(classes.getId());
+		model.setName(classes.getName());
+		model.setCode(classes.getCode());
+		model.setMajorId(classes.getMajor());
+		model.setTeacherId(classes.getTeacher());
 		return model;
 	}
 	

@@ -1,5 +1,7 @@
 package com.web.internship_api.models;
 
+import java.util.Objects;
+
 import com.web.internship_api.entities.Major;
 import com.web.internship_api.entities.Teacher;
 
@@ -66,6 +68,27 @@ public class ClassModel {
 
 	public void setTeacherId(Teacher teacherId) {
 		this.teacherId = teacherId;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, code, name, majorId, teacherId );
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ClassModel other = (ClassModel) obj;
+		return Objects.equals(name, other.name) &&
+				id == other.id &&
+				Objects.equals(majorId, other.majorId) &&
+				Objects.equals(teacherId, other.teacherId)
+				&& Objects.equals(code, other.code);
 	}
 
 	@Override

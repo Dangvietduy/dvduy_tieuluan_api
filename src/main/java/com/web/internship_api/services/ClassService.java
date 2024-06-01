@@ -8,7 +8,7 @@ import com.web.internship_api.models.ClassModel;
 
 public interface ClassService {
 	List<Class> findAll();
-	Optional<Class> findByClassId(int classId);
+	Optional<Class> findByClassId(int id);
 	List<Class> searchClass(ClassModel model);
 	Class createClass(ClassModel model);
 	Class updateClass(ClassModel model);
