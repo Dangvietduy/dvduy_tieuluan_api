@@ -14,12 +14,13 @@ import com.web.internship_api.models.StudentModel;
 import com.web.internship_api.models.UltilSetModel;
 import com.web.internship_api.repositories.StudentRepository;
 import com.web.internship_api.services.StudentService;
+import com.web.internship_api.entities.Class;
 
 @Service
-public class StudentServiceImpl implements StudentService{
+public class StudentServiceImpl implements StudentService {
 	@Autowired
 	StudentRepository studentRepository;
-	
+
 	@Override
 	public List<Student> findAll() {
 		return studentRepository.findByDeleted((byte) 0);
@@ -27,25 +28,26 @@ public class StudentServiceImpl implements StudentService{
 
 	@Override
 	public Optional<Student> findById(int id) {
-		return studentRepository.findByIdAndDeleted(id,(byte) 0);
+		return studentRepository.findByIdAndDeleted(id, (byte) 0);
 	}
 
 	@Override
 	public Optional<Student> findByName(String name) {
-		return studentRepository.findByNameAndDeleted(name,(byte) 0);
+		return studentRepository.findByNameAndDeleted(name, (byte) 0);
 	}
 
 	@Override
-	public Student createStudent(StudentModel model, Account account) {
+	public Student createStudent(StudentModel model, Account account, Class studentClass) {
 		Student student = UltilSetModel.setStudent(model);
 		student.setAccount(account);
+		student.setClazz(studentClass);
 		return studentRepository.save(student);
 	}
 
 	@Override
-	public Student updateStudent(StudentModel model,int id) {
+	public Student updateStudent(StudentModel model, int id) {
 		Optional<Student> optional = this.findById(id);
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			Student student = UltilSetModel.setStudent(model);
 			student.setId(optional.get().getId());
 			student.setAccount(optional.get().getAccount());
@@ -57,7 +59,7 @@ public class StudentServiceImpl implements StudentService{
 	@Override
 	public Student deltedStudent(int id) {
 		Optional<Student> optional = this.findById(id);
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			Student student = optional.get();
 			student.getAccount().setDeleted((byte) 1);
 			student.setDeleted((byte) 1);
@@ -68,39 +70,39 @@ public class StudentServiceImpl implements StudentService{
 
 	@Override
 	public List<Student> searchStudent(SearchStudentModel model) {
-		return studentRepository.searchStudent(model.getName(), model.getClassName(), model.getYear_study(),"");
+		return studentRepository.searchStudent(model.getName(), model.getClassName(), model.getYear_study(), "");
 	}
 
 	@Override
 	public List<Student> statisticalStudent(SearchStatisticial model) {
 		List<Student> listStudent = null;
-		if(model.getCourse() == 0 && model.getInternshipName() == "" && model.getNameTeacher() =="") {
+		if (model.getCourse() == 0 && model.getInternshipName() == "" && model.getNameTeacher() == "") {
 			listStudent = studentRepository.searchStudent(
-					model.getNameStudent(), 
+					model.getNameStudent(),
 					model.getClassName(),
 					model.getYear_study(),
 					model.getSex());
-		}else {
-			if(model.getCourse() == 0) {
+		} else {
+			if (model.getCourse() == 0) {
 				listStudent = studentRepository.statisticalStudentNoCourse(
-						model.getNameStudent(), 
-						model.getClassName(), 
+						model.getNameStudent(),
+						model.getClassName(),
 						model.getYear_study(),
-						model.getSex(), 
-						model.getNameTeacher(), 
+						model.getSex(),
+						model.getNameTeacher(),
 						model.getInternshipName());
-			}else {
+			} else {
 				listStudent = studentRepository.statisticalStudent(
-						model.getNameStudent(), 
-						model.getClassName(), 
+						model.getNameStudent(),
+						model.getClassName(),
 						model.getYear_study(),
-						model.getSex(), 
-						model.getNameTeacher(), 
+						model.getSex(),
+						model.getNameTeacher(),
 						model.getInternshipName(),
 						model.getCourse());
 			}
 		}
 		return listStudent;
 	}
-	
+
 }

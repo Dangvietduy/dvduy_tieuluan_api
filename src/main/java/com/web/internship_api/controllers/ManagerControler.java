@@ -117,7 +117,8 @@ public class ManagerControler {
 			studentAccount.setPassword(passwordEncoder.encode(password));
 			studentAccount = accountService.createAccount(studentAccount,"STUDENT");
 			Account findAccount = accountService.findAccountByUserName(studentAccount.getUsername()).get();
-			Student student = studentService.createStudent(model,findAccount);
+			Class findedClass = classService.findByClassId(Integer.valueOf(model.getClass_id())).get();
+			Student student = studentService.createStudent(model,findAccount, findedClass);
 			return ResponseEntity.status(HttpStatus.OK).
 					body( new ResponseObject(200, "Register successfull", student));
 		}
