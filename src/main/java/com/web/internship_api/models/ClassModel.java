@@ -13,15 +13,15 @@ public class ClassModel {
 
 	private String name;
 	
-	private Major majorId;
+	private Integer majorId;
 	
-	private Teacher teacherId;
+	private Integer teacherId;
 	
 	public ClassModel() {
 		
 	}
 
-	public ClassModel(int id, String code, String name, Major majorId, Teacher teacherId) {
+	public ClassModel(int id, String code, String name, Integer majorId, Integer teacherId) {
 		super();
 		this.id = id;
 		this.code = code;
@@ -54,19 +54,19 @@ public class ClassModel {
 		this.name = name;
 	}
 
-	public Major getMajorId() {
+	public Integer getMajorId() {
 		return majorId;
 	}
 
-	public void setMajorId(Major majorId) {
+	public void setMajorId(Integer majorId) {
 		this.majorId = majorId;
 	}
 
-	public Teacher getTeacherId() {
+	public Integer getTeacherId() {
 		return teacherId;
 	}
 
-	public void setTeacherId(Teacher teacherId) {
+	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
 	}
 	

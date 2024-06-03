@@ -8,14 +8,21 @@ import org.springframework.stereotype.Service;
 
 import com.web.internship_api.entities.Class;
 import com.web.internship_api.entities.Company;
+import com.web.internship_api.entities.Student;
 import com.web.internship_api.models.ClassModel;
 import com.web.internship_api.repositories.ClassRepository;
 import com.web.internship_api.services.ClassService;
+import com.web.internship_api.services.MajorService;
+import com.web.internship_api.services.TeacherService;
 
 @Service
-public class ClassServiceImpl implements ClassService{
+public class ClassServiceImpl implements ClassService {
 	@Autowired
 	ClassRepository classRepository;
+	@Autowired
+	MajorService majorService;
+	@Autowired
+	TeacherService teacherService;
 
 	@Override
 	public List<Class> findAll() {
@@ -37,12 +44,12 @@ public class ClassServiceImpl implements ClassService{
 	@Override
 	public Class createClass(ClassModel model) {
 		Optional<Class> optional = this.findByClassId(model.getId());
-		if(optional.isEmpty()) {
+		if (optional.isEmpty()) {
 			Class classes = new Class();
 			classes.setName(model.getName());
 			classes.setCode(model.getCode());
-			classes.setMajor(model.getMajorId());
-			classes.setTeacher(model.getTeacherId());
+			classes.setMajor(majorService.findById(model.getMajorId()).get());
+			classes.setTeacher(teacherService.findById(model.getTeacherId()).get());
 			return classRepository.save(classes);
 		}
 		return null;
@@ -56,7 +63,11 @@ public class ClassServiceImpl implements ClassService{
 
 	@Override
 	public Class deleteClass(int id) {
-		// TODO Auto-generated method stub
+		Optional<Class> item = classRepository.findById(id);
+		if(item.isPresent()) {
+			classRepository.delete(item.get());
+			return item.get();
+		}
 		return null;
 	}
 
