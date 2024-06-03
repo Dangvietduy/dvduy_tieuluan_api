@@ -193,7 +193,8 @@ public class StudentControllers {
 	public ResponseEntity<ResponseObject> getEvaluate(@PathVariable int id){
 		Optional<Student> student =  studentService.findById(id);
 		if(student.isPresent()) {
-			Evaluate evaluate = student.get().getInternshipsStudents().get(0).getEvaluates().get(0);
+			List<Evaluate> evaluateList = student.get().getInternshipsStudents().get(0).getEvaluates();
+			Evaluate evaluate = !evaluateList.isEmpty() ? evaluateList.get(0) : null;
 			return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(200, "Successfully",evaluate));
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseObject(404, "Not Found", ""));

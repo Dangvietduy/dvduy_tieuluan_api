@@ -22,14 +22,14 @@ public class StudentModel {
 	
 	private String year_study;
 	
-	private String class_id;
+	private int class_id;
 
 	public StudentModel() {
 	
 	}
 
 	public StudentModel(String email, String fullname, String sex, Date dob, String phone, String avatar,
-			String address, String department, String year_study, String class_id) {
+			String address, String department, String year_study, int class_id) {
 		super();
 		this.email = email;
 		this.fullname = fullname;
@@ -115,11 +115,11 @@ public class StudentModel {
 		this.year_study = year_study;
 	}
 
-	public String getClass_id() {
+	public int getClass_id() {
 		return class_id;
 	}
 
-	public void setClass_id(String class_id) {
+	public void setClass_id(int class_id) {
 		this.class_id = class_id;
 	}
 }

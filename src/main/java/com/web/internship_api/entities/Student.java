@@ -44,6 +44,9 @@ public class Student implements Serializable {
 
 	@Column(name="year_study")
 	private String yearStudy;
+//	
+//	@Column(name="class_id")
+//	private String classId;
 
 	//bi-directional many-to-one association to InternshipsStudent
 	@OneToMany(mappedBy="student")
@@ -154,6 +157,14 @@ public class Student implements Serializable {
 	public void setYearStudy(String yearStudy) {
 		this.yearStudy = yearStudy;
 	}
+	
+//	public String getClassId() {
+//		return this.classId;
+//	}
+//
+//	public void setClassId(String classId) {
+//		this.classId = classId;
+//	}
 
 	public List<InternshipsStudent> getInternshipsStudents() {
 		return this.internshipsStudents;

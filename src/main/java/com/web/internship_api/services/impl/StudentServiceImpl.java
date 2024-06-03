@@ -12,6 +12,7 @@ import com.web.internship_api.models.SearchStatisticial;
 import com.web.internship_api.models.SearchStudentModel;
 import com.web.internship_api.models.StudentModel;
 import com.web.internship_api.models.UltilSetModel;
+import com.web.internship_api.repositories.ClassRepository;
 import com.web.internship_api.repositories.StudentRepository;
 import com.web.internship_api.services.StudentService;
 import com.web.internship_api.entities.Class;
@@ -20,6 +21,8 @@ import com.web.internship_api.entities.Class;
 public class StudentServiceImpl implements StudentService {
 	@Autowired
 	StudentRepository studentRepository;
+	@Autowired
+	ClassRepository classRepository;
 
 	@Override
 	public List<Student> findAll() {
@@ -49,6 +52,10 @@ public class StudentServiceImpl implements StudentService {
 		Optional<Student> optional = this.findById(id);
 		if (optional.isPresent()) {
 			Student student = UltilSetModel.setStudent(model);
+			Optional<Class> grade = classRepository.findById(model.getClass_id());
+			if(optional.isPresent()) {
+				student.setClazz(grade.get());
+			}
 			student.setId(optional.get().getId());
 			student.setAccount(optional.get().getAccount());
 			return studentRepository.save(student);

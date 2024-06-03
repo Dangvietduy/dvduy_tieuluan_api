@@ -2,6 +2,8 @@ package com.web.internship_api.services.impl;
 
 import java.util.Optional;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import com.web.internship_api.entities.Evaluate;
 import com.web.internship_api.entities.InternshipsStudent;
 import com.web.internship_api.models.EvaluateModel;
 import com.web.internship_api.repositories.EvaluteRepository;
+import com.web.internship_api.services.EmailService;
 import com.web.internship_api.services.EvaluteService;
 import com.web.internship_api.services.InternshipStudentService;
 
@@ -18,7 +21,8 @@ public class EvaluteServiceImpl implements EvaluteService{
 	EvaluteRepository evaluteRepository;
 	@Autowired
 	InternshipStudentService internshipStudentService;
-	
+	@Autowired
+	EmailService emailService;
 	@Override
 	public Optional<Evaluate> findByInternshipStudentId(int internshipStudentId) {
 		return evaluteRepository.findByInternshipStudentId(internshipStudentId);
@@ -29,7 +33,18 @@ public class EvaluteServiceImpl implements EvaluteService{
 		Optional<Evaluate> optional = this.findByInternshipStudentId(model.getInternshipsStudentId());
 		if(optional.isEmpty()) {
 			Evaluate evaluate = this.setModel(model);
-			return evaluteRepository.save(evaluate);
+			Evaluate eval = evaluteRepository.save(evaluate);
+			
+			if(eval != null) {
+				String subject = "Kết Quả Thực Tập";
+				String body = "Điểm Của M: "+model.getScore()+" Lời Phê Của Tao: "+model.getEvaluateContent() ;
+				try {
+					emailService.sendMail(optional.get().getInternshipsStudent().getStudent().getEmail(), subject , body);
+				} catch (MessagingException e) {
+					e.getMessage();
+				}
+			}
+			return eval;
 		}
 		return null;
 	}
@@ -40,7 +55,17 @@ public class EvaluteServiceImpl implements EvaluteService{
 		if(optional.isPresent()) {
 			Evaluate evaluate = this.setModel(model);
 			evaluate.setId(model.getId());
-			return evaluteRepository.save(evaluate);
+			Evaluate eval = evaluteRepository.save(evaluate);
+			if(eval != null) {
+				String subject = "Kết Quả Thực Tập";
+				String body = "Điểm Của M: "+model.getScore()+" Lời Phê Của Tao: "+model.getEvaluateContent() ;
+				try {
+					emailService.sendMail(optional.get().getInternshipsStudent().getStudent().getEmail(), subject , body);
+				} catch (MessagingException e) {
+					e.getMessage();
+				}
+			}
+			return eval;
 		}
 		return null;
 	}

@@ -58,6 +58,9 @@ public class UltilSetModel {
 		response.setAddress(internship.getAddress());
 		response.setTeacherId(internship.getTeacher().getId());
 		response.setTeacherName(internship.getTeacher().getName());
+		response.setStudents(internship.getInternshipsStudents().stream().map(internshipStudent -> {
+			return setResponseStudent(internshipStudent.getStudent());
+		}).collect(Collectors.toList()));
 		return response;
 	}
 	public static TeacherModel setTeacherModel(Teacher teacher) {
@@ -131,7 +134,6 @@ public class UltilSetModel {
 		student.setDepartment(model.getDepartment());
 		student.setYearStudy(model.getYear_study());
 		student.setAvatar(model.getAvatar());
-//		student.setClass_(model.getClassName());
 		return  student;
 	}
 	
