@@ -95,8 +95,8 @@ public class UltilSetModel {
 		model.setId(classes.getId());
 		model.setName(classes.getName());
 		model.setCode(classes.getCode());
-		model.setMajorId(classes.getMajor());
-		model.setTeacherId(classes.getTeacher());
+		model.setMajorId(classes.getMajor().getId());
+		model.setTeacherId(classes.getTeacher().getId());
 		return model;
 	}
 	

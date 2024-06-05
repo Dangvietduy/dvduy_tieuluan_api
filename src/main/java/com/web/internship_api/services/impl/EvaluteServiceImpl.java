@@ -37,7 +37,7 @@ public class EvaluteServiceImpl implements EvaluteService{
 			
 			if(eval != null) {
 				String subject = "Kết Quả Thực Tập";
-				String body = "Điểm Của M: "+model.getScore()+" Lời Phê Của Tao: "+model.getEvaluateContent() ;
+				String body = "Điểm thực tập của bạn là: "+model.getScore()+" Đ" + ". Lời phê của giáo viên cố vấn: "+model.getEvaluateContent() ;
 				try {
 					emailService.sendMail(optional.get().getInternshipsStudent().getStudent().getEmail(), subject , body);
 				} catch (MessagingException e) {
@@ -57,8 +57,8 @@ public class EvaluteServiceImpl implements EvaluteService{
 			evaluate.setId(model.getId());
 			Evaluate eval = evaluteRepository.save(evaluate);
 			if(eval != null) {
-				String subject = "Kết Quả Thực Tập";
-				String body = "Điểm Của M: "+model.getScore()+" Lời Phê Của Tao: "+model.getEvaluateContent() ;
+				String subject = "Kết Quả Thực Tập Đã Được Cập Nhật";
+				String body = "Điểm thực tập của bạn là: "+model.getScore()+" Đ"+". Lời phê của giáo viên cố vấn: "+model.getEvaluateContent() ;
 				try {
 					emailService.sendMail(optional.get().getInternshipsStudent().getStudent().getEmail(), subject , body);
 				} catch (MessagingException e) {
